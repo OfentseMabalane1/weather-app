@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./App.css";
+import WeatherInfo from "./WeatherInfo";
 
 function App() {
   const [city, setCity] = useState(""); 
@@ -21,15 +22,14 @@ function App() {
         );
 
         if (response.data.cod !== 200) {
-          // This checks for an error in the response
           setWeather(null);
           setError("City not found. Please check the spelling or try another city.");
         } else {
           setWeather(response.data);
-          setError(null); // Reset error if the fetch is successful
+          setError(null); 
         }
       } catch (error) {
-        console.error("API request failed", error); // Log the error to the console
+        console.error("API request failed", error); 
         setWeather(null);
         setError("An error occurred while fetching the weather data.");
       }
@@ -51,9 +51,11 @@ function App() {
 
       {weather && (
         <div className="weather-details">
+          <WeatherInfo 
+            weather={weather.weather[0].main} 
+            temperature={weather.main.temp} 
+          />
           <h2>{weather.name}, {weather.sys.country}</h2>
-          <p>Temperature: {weather.main.temp}°C</p>
-          <p>Weather: {weather.weather[0].description}</p>
           <p>Humidity: {weather.main.humidity}%</p>
           <p>Wind Speed: {weather.wind.speed} m/s</p>
         </div>
@@ -63,4 +65,3 @@ function App() {
 }
 
 export default App;
-
